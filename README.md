@@ -1,4 +1,4 @@
-# Array Method Drills
+# Sorting Practice
 
 ### Getting started
 
