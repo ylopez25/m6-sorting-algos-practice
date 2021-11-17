@@ -71,20 +71,9 @@ return catArt.sort((a,b) => {
 
 // sort catArt by price
 const catArtSortByPriceA = () => {
-  return catArt.sort((a,b) => parseFloat(a.price) - parseFloat(b.price))
-   
-  //   let price1 =  Number(a.price);
-  //   let price2 = parseFloat(b.price).toLocaleString();
-  //   console.log(price1)
-  //   if (price1 > price2) {
-  //     return 1
-  //   }
-  //   if(price1 < price2) {
-  //     return -1
-  //   }
-  //   return 0
-  // })
- // console.log(catArt[0].price)
+  return catArt.map(obj => String(obj.price).includes("♇♇") ? {...obj, price: Number(obj.price.slice(2)) * 10} : obj)
+  .sort((a, b) => Number(a.price) - Number(b.price))
+  .map(obj => obj.price % 10 === 0 ? {...obj, price: "♇♇" + obj.price / 10} : obj)
 };
 
 // Create your own sort function
@@ -96,14 +85,31 @@ const catArtSortByPriceA = () => {
 // or look up another common sort algorithm (i.e. quicksort, ) and try your own implementation
 // Bonus add another argument that would allow the function to be used for ascending or descending order
 const mySortFunction = (arr) => {
-  console.log(arr);
-  const half = arr.length / 2;
-  if (arr.length <= 1) {
-    return arr;
+
+  if(arr.length <= 1) {
+    return arr
   }
-  const left = arr.splice(0, half); // make a new array with the first half of the original array
-  const right = arr; // we don't need to rename arr, but it should be helpful for visualizing our code
-  return merge(mySortFunction(left), mySortFunction(right));
+
+  let mid = Math.floor(arr.length / 2)
+  let left = arr.splice(0, mid)
+  let right = arr
+
+  return merge(mySortFunction(left), mySortFunction(right))
+};
+
+
+
+
+const merge = (left, right) => {
+  let arr = []
+  while (left.length && right.length) {
+    if (left[0] < right[0]) {
+      arr.push(left.shift())
+    } else {
+      arr.push(right.shift())
+    }
+  }
+  return [...arr, ...left, ...right]
 };
 
 module.exports = {
